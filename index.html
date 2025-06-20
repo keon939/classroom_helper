@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Classroom Helper - Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Classroom Helper</h1>
+
+    <h2>Login</h2>
+    <input type="text" id="loginName" placeholder="Enter your name" />
+    <input type="password" id="loginPasscode" placeholder="Enter your passcode" />
+    <button onclick="login()">Login</button>
+
+    <h2>Register</h2>
+    <input type="text" id="regName" placeholder="Choose a name" />
+    <input type="password" id="regPasscode" placeholder="Choose a passcode" />
+    <button onclick="register()">Register</button>
+  </div>
+
+  <script>
+    function register() {
+      const name = document.getElementById("regName").value.trim();
+      const pass = document.getElementById("regPasscode").value.trim();
+
+      if (name && pass) {
+        let users = JSON.parse(localStorage.getItem("users") || "[]");
+        if (users.some(u => u.name === name)) {
+          alert("This name is already taken!");
+          return;
+        }
+        users.push({ name, pass });
+        localStorage.setItem("users", JSON.stringify(users));
+        alert("Registered successfully!");
+      } else {
+        alert("Please fill in both fields.");
+      }
+    }
+
+    function login() {
+      const name = document.getElementById("loginName").value.trim();
+      const pass = document.getElementById("loginPasscode").value.trim();
+
+      if (name === "admin" && pass === "admin123") {
+        window.location.href = "admin.html";
+        return;
+      }
+
+      if (name === "moderator" && pass === "mod999") {
+        window.location.href = "moderator.html";
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const user = users.find(u => u.name === name && u.pass === pass);
+
+      if (user) {
+        alert("Welcome " + name + "!");
+        window.location.href = "student.html";
+      } else {
+        alert("Incorrect name or passcode.");
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moderator Panel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Moderator Panel</h1>
+
+    <h2>Registered Users</h2>
+    <ul id="userList"></ul>
+
+    <h2>Clear All Assignments</h2>
+    <button onclick="clearAssignments()">Clear Assignments</button>
+
+    <h2>Remove User</h2>
+    <input type="text" id="removeName" placeholder="Enter name to remove" />
+    <button onclick="removeUser()">Remove User</button>
+
+    <h2>Reset Entire System</h2>
+    <button onclick="resetSystem()">Reset Everything</button>
+
+    <p><a href="index.html">Back to Login</a></p>
+  </div>
+
+  <script>
+    function clearAssignments() {
+      localStorage.removeItem('assignments');
+      alert('All assignments cleared!');
+    }
+
+    function removeUser() {
+      const name = document.getElementById("removeName").value.trim();
+      let users = JSON.parse(localStorage.getItem("users") || "[]");
+      const index = users.findIndex(u => u.name === name);
+      if (index !== -1) {
+        users.splice(index, 1);
+        localStorage.setItem("users", JSON.stringify(users));
+        alert(`${name} has been removed.`);
+        location.reload();
+      } else {
+        alert("User not found.");
+      }
+    }
+
+    function resetSystem() {
+      if (confirm("Are you sure you want to reset everything?")) {
+        localStorage.clear();
+        alert("System reset.");
+        location.reload();
+      }
+    }
+
+    window.onload = () => {
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const list = document.getElementById("userList");
+      users.forEach(u => {
+        const li = document.createElement("li");
+        li.textContent = `Name: ${u.name}, Passcode: ${u.pass}`;
+        list.appendChild(li);
+      });
+    };
+  </script>
+</body>
+</html>

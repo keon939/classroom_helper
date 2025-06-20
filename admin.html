@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome Admin</h1>
+    <textarea id="assignment" placeholder="Enter new assignment..."></textarea>
+    <button onclick="postAssignment()">Post Assignment</button>
+    <p><a href="index.html">Logout</a></p>
+  </div>
+  <script>
+    function postAssignment() {
+      const assignment = document.getElementById('assignment').value;
+      let assignments = JSON.parse(localStorage.getItem('assignments') || "[]");
+      assignments.push(assignment);
+      localStorage.setItem('assignments', JSON.stringify(assignments));
+      alert("Assignment posted!");
+      document.getElementById('assignment').value = "";
+    }
+  </script>
+</body>
+</html>
